@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <%- include("../header.ejs") %>
+  <body>
+    <%- include("../commons/navbar.ejs") %>
+    <div class="card mx-auto my-5" style="width: 50vh;">
+      <div class="card-header">
+        お問い合わせ内容の確認
+      </div>
+      <table class="table">
+        <tr>
+          <th>お名前</th>
+          <td><%= form.lastName %> <%= form.firstName %></td>
+        </tr>
+        <tr>
+          <th>会社名</th>
+          <td><%= form.company %></td>
+        </tr>
+        <tr>
+          <th>メールアドレス</th>
+          <td><%= form.email %></td>
+        </tr>
+        <tr>
+          <th>お問い合わせ内容</th>
+          <td><%= form.inquiryText %></td>
+        </tr>
+      </table>
+      <div class="card-body">
+        <div class="row g-3 mb-3">
+          <form action="/inquiries/done" method="post">
+            <input type="hidden" name="firstName" value="<%= form.firstName %>">
+            <input type="hidden" name="lastName" value="<%= form.lastName %>">
+            <input type="hidden" name="company" value="<%= form.company %>">
+            <input type="hidden" name="email" value="<%= form.email %>">
+            <input type="hidden" name="inquiryText" value="<%= form.inquiryText %>">
+            <button type="submit" class="btn btn-primary">送信</button>
+          </form>
+          <form action="/inquiries/input" method="post">
+            <input type="hidden" name="firstName" value="<%= form.firstName %>">
+            <input type="hidden" name="lastName" value="<%= form.lastName %>">
+            <input type="hidden" name="company" value="<%= form.company %>">
+            <input type="hidden" name="email" value="<%= form.email %>">
+            <input type="hidden" name="inquiryText" value="<%= form.inquiryText %>">
+            <button type="submit" class="btn btn-secondary">修正</button>
+          </form>
+        </div>
+      </div> 
+    </div>
+  </body>
+</html>

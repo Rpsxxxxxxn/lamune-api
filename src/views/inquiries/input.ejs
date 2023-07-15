@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <%- include("../header.ejs") %>
+  <body>
+    <%- include("../commons/navbar.ejs") %>
+    <div>
+      <div class="card mx-auto mt-5" style="width: 50vh;">
+        <div class="card-header">
+          お問い合わせフォーム
+        </div>
+        <div class="card-body">
+          <form method="post" action="/inquiries/confirm">
+            <div class="row g-3 mb-3">
+              <div class="col">
+                <label for="lastNameInput" class="form-label">氏名
+                  <span class="badge bg-danger">必須</span></label>
+                <input id="lastNameInput" name="lastName" type="text" class="form-control <%= errors && errors.some((error) => error.path === 'lastName') ? 'is-invalid' : '' %>" aria-label="Last name" maxlength="20" value="<%=form.lastName %>">
+                <div class="invalid-feedback">
+                  <%= errors && errors.some((error) => error.path === 'lastName') ? errors.find((error) => error.path === 'lastName').msg : '' %>
+                </div>
+              </div>
+              <div class="col">
+                <label for="firstNameInput" class="form-label">名前
+                  <span class="badge bg-danger">必須</span></label>
+                <input id="firstNameInput" name="firstName" type="text" class="form-control <%= errors && errors.some((error) => error.path === 'firstName') ? 'is-invalid' : '' %>" aria-label="First name" maxlength="20" value="<%=form.firstName %>">
+                <div class="invalid-feedback">
+                  <%= errors && errors.some((error) => error.path === 'firstName') ? errors.find((error) => error.path === 'firstName').msg : '' %>
+                </div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="companyInput" class="form-label">社名</label>
+              <input id="companyInput" name="company" type="text" class="form-control <%= errors && errors.some((error) => error.path === 'company') ? 'is-invalid' : '' %>" maxlength="50" value="<%=form.company %>">
+              <div class="invalid-feedback">
+                <%= errors && errors.some((error) => error.path === 'company') ? errors.find((error) => error.path === 'company').msg : '' %>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="emailInput" class="form-label">メールアドレス
+                <span class="badge bg-danger">必須</span></label>
+              <input id="emailInput" name="email" type="email" class="form-control <%= errors && errors.some((error) => error.path === 'email') ? 'is-invalid' : '' %>" value="<%=form.email %>">
+              <div class="invalid-feedback">
+                <%= errors && errors.some((error) => error.path === 'email') ? errors.find((error) => error.path === 'email').msg : '' %>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="inquiryTextarea" class="form-label">お問い合わせ内容
+                <span class="badge bg-danger">必須</span></label>
+              <textarea class="form-control <%= errors && errors.some((error) => error.path === 'inquiryText') ? 'is-invalid' : '' %>" name="inquiryText" id="inquiryTextarea" rows="5" maxlength="300"><%=form.inquiryText %></textarea>
+              <div class="invalid-feedback">
+                <%= errors && errors.some((error) => error.path === 'inquiryText') ? errors.find((error) => error.path === 'inquiryText').msg : '' %>
+              </div>
+            </div>
+            <div class="row g-3 mb-3">
+              <button type="submit" class="btn btn-primary">送信</button>
+              <button type="button" class="btn btn-secondary">キャンセル</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

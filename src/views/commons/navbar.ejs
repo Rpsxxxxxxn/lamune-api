@@ -1,0 +1,35 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="http://localhost:8080/home">ラムネアプリ</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <form class="d-flex" action="/search" method="post">
+          <input class="form-control me-2 bg-dark" type="search" name="search" placeholder="何かお探しですか？" aria-label="search">
+          <button class="btn btn-outline-primary" type="submit">Search</button>
+        </form>
+      </ul>
+      <form class="d-flex">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <!-- <li class="nav-item">
+            <a class="nav-link <%= naviActive === 'home' ? 'active' : '' %>" aria-current="page" href="http://localhost:8080/home">ホーム</a>
+          </li> -->
+          <!-- <li class="nav-item">
+            <a class="nav-link <%= naviActive === 'cart' ? 'active' : '' %>" href="http://localhost:8080/cart/items">カート</a>
+          </li> -->
+          <li class="nav-item">
+            <a class="nav-link <%= naviActive === 'inquiries' ? 'active' : '' %>"  href="http://localhost:8080/inquiries/input">お問い合わせ</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= naviActive === 'user' ? 'active' : '' %>" href="http://localhost:8080/user/signin">ログイン</a>
+          </li>
+        </ul>
+        <div class="dropdown">
+          <a class="btn btn-outline-danger" type="button" href="http://localhost:8080/sell">出品</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</nav>
