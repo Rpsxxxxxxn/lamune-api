@@ -22,6 +22,6 @@ router.post("/register", inquiryController.register);
 /**
  * お問い合わせ完了画面
  */
-router.post("/done", inquiryController.done);
+router.get("/done", inquiryController.done);
 
 module.exports = router;

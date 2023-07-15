@@ -22,27 +22,17 @@ exports.signup = [
     .notEmpty()
     .withMessage('パスワードを入力してください。')
     .isLength({ min: 8 })
-    .withMessage('パスワードは8文字以上で入力してください。'),
+    .withMessage('パスワードは8文字以上で入力してください。')
+    .isStrongPassword()
+    .withMessage('パスワードは大文字・小文字・数字・記号を含む必要があります。'),
   check('passwordConfirm')
     .notEmpty()
     .withMessage('パスワード（確認）を入力してください。')
-    .equals('password')
-    .withMessage('パスワードが一致しません。'),
+    .custom((value, {req}) => value === req.body.password)
+    .withMessage("パスワードとパスワード（確認）が一致しません。"),
 ]
 
 exports.signin = [
-  check('lastName')
-    .not()
-    .isEmpty()
-    .withMessage('氏名を入力してください。')
-    .isLength({ max: 20 })
-    .withMessage('氏名は20文字以内で入力してください。'),
-  check('firstName')
-    .not()
-    .isEmpty()
-    .withMessage('名前を入力してください。')
-    .isLength({ max: 20 })
-    .withMessage('名前は20文字以内で入力してください。'),
   check('email')
     .notEmpty()
     .withMessage('メールアドレスを入力してください。')
