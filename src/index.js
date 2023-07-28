@@ -3,9 +3,10 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const inquiryRouter = require('./routes/inquiry');
-const userRouter = require('./routes/user');
-const homeRouter = require('./routes/home');
+const inquiryRouter = require('./routes/inquiryRouter');
+const userRouter = require('./routes/userRouter');
+const homeRouter = require('./routes/homeRouter');
+const productRouter = require('./routes/productRouter');
 const session = require('express-session');
 
 app.use(session({
@@ -21,6 +22,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use('/inquiries', inquiryRouter);
 app.use('/users', userRouter);
 app.use('/home', homeRouter);
+app.use('/products', productRouter);
 
 // エラーハンドリング
 app.use((err, req, res, next) => {
