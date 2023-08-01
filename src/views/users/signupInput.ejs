@@ -8,6 +8,11 @@
           新規登録
         </div>
         <div class="card-body">
+          <% if (errors && errors.find((error)=> error.msg !== '')) { %>
+            <div class="alert alert-danger" role="alert">
+              <%= errors.find((error)=> error.msg !== '').msg %>
+            </div>
+          <% } %>
           <form action="/users/signup/confirm" method="post">
             <div class="row g-3 mb-3">
               <div class="col">

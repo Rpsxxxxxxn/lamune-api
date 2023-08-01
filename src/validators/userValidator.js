@@ -22,9 +22,7 @@ exports.signup = [
     .notEmpty()
     .withMessage('パスワードを入力してください。')
     .isLength({ min: 8 })
-    .withMessage('パスワードは8文字以上で入力してください。')
-    .isStrongPassword()
-    .withMessage('パスワードは大文字・小文字・数字・記号を含む必要があります。'),
+    .withMessage('パスワードは8文字以上で入力してください。'),
   check('passwordConfirm')
     .notEmpty()
     .withMessage('パスワード（確認）を入力してください。')

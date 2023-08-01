@@ -78,7 +78,7 @@ exports.confirm = (req, res) => {
  * @param {*} req リクエストパラメータ
  * @param {*} res レスポンスパラメータ
  */
-exports.register = (req, res) => {
+exports.register = async (req, res) => {
   const inquiriesForm = req.session.inquiriesForm;
   const sql = "INSERT INTO inquiries (company, name, email, inquiry_text) VALUES (?, ?, ?, ?)";
   const params = [
@@ -87,7 +87,7 @@ exports.register = (req, res) => {
     inquiriesForm.email,
     inquiriesForm.inquiryText
   ];
-  DatabaseUtils.executeQuery(sql, params);
+  await DatabaseUtils.executeQuery(sql, params);
   res.redirect("/inquiries/done");
 }
 
