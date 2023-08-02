@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <%- include("../header.ejs") %>
+  <body>
+    <%- include("../commons/navbar.ejs") %>
+    <div>
+      <div class="card mx-auto mt-5 w-50">
+        <div class="card-header">
+          製品登録画面
+        </div>
+        <div class="card-body">
+          <form method="post" action="/products/confirm">
+            <div class="mb-3">
+              <label for="companyInput" class="form-label">製品名</label>
+              <input id="companyInput" name="company" type="text" class="form-control <%= errors && errors.some((error) => error.path === 'company') ? 'is-invalid' : '' %>" maxlength="50" value="<%=form.company %>">
+              <div class="invalid-feedback">
+                <%= errors && errors.some((error) => error.path === 'company') ? errors.find((error) => error.path === 'company').msg : '' %>
+              </div>
+            </div>
+            <div class="mb-3">
+              <div class="input-group">
+                <input id="multipleSelectFile" type="file" class="form-control" aria-describedby="multipleSelectFile" aria-label="Upload" multiple>
+                <button id="multipleSelectFileSubmit" type="button" class="btn btn-outline-secondary">確定</button>
+              </div>
+              <div id="sampleImages">
+
+              </div>
+            </div>
+            <div class="row g-3 mb-3">
+              <button type="submit" class="btn btn-primary">送信</button>
+              <button type="button" class="btn btn-secondary">キャンセル</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+<script>
+  const multipleSelectFile = document.getElementById('multipleSelectFile');
+  const sampleImages = document.getElementById('sampleImages');
+  // 画像が選択された時のイベント
+  multipleSelectFile.addEventListener('change', (event) => {
+    // 画像表示エリアを初期化
+    sampleImages.innerHTML = '';
+    // 選択されたファイルのリストを取得
+    const fileList = event.target.files;
+    // 選択されたファイルの数だけ処理を行う
+    for (let i = 0; i < fileList.length; i++) {
+      // 選択された画像を表示する
+      const img = document.createElement('img');
+      img.src = URL.createObjectURL(fileList[i]);
+      // アスペクト比を維持するためにwidthかheightのどちらかを固定する
+      // 表示サイズは200px
+
+
+      // 画像表示エリアに選択された画像を表示する
+      sampleImages.appendChild(img);
+    }
+  });
+</script>

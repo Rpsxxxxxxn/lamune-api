@@ -3,14 +3,14 @@
   <%- include("../header.ejs") %>
   <body>
     <%- include("../commons/navbar.ejs") %>
-      <div class="card mx-auto my-5" style="width: 50vh;">
+      <div class="card mx-auto my-5 w-50">
         <div class="card-header">
           新規登録
         </div>
         <div class="card-body">
-          <% if (errors && errors.find((error)=> error.msg !== '')) { %>
+          <% if (errors && errors.some((error)=> error.path === 'registeredEmail')) { %>
             <div class="alert alert-danger" role="alert">
-              <%= errors.find((error)=> error.msg !== '').msg %>
+              <%= errors.find((error)=> error.path === 'registeredEmail').msg %>
             </div>
           <% } %>
           <form action="/users/signup/confirm" method="post">

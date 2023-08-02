@@ -7,6 +7,7 @@ const inquiryRouter = require('./routes/inquiryRouter');
 const userRouter = require('./routes/userRouter');
 const homeRouter = require('./routes/homeRouter');
 const productRouter = require('./routes/productRouter');
+const searchRouter = require('./routes/searchRouter');
 const session = require('express-session');
 
 app.use(session({
@@ -23,6 +24,7 @@ app.use('/inquiries', inquiryRouter);
 app.use('/users', userRouter);
 app.use('/home', homeRouter);
 app.use('/products', productRouter);
+app.use('/search', searchRouter);
 
 // エラーハンドリング
 app.use((err, req, res, next) => {

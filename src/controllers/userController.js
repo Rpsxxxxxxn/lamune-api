@@ -32,6 +32,7 @@ exports.signinGet = (req, res) => {
  */
 exports.signinPost = async (req, res) => {
   const userForm = req.body;
+  // バリデーションチェック
   const result = validationResult(req);
   if(!result.isEmpty()) {
     req.session.userForm = userForm;
@@ -43,11 +44,15 @@ exports.signinPost = async (req, res) => {
       title: "ユーザーログイン画面"
     });
   }
+  // ユーザーの存在確認
   const params = [userForm.email];
   const sql = "SELECT * FROM users WHERE email = ?";
   const userData = await DatabaseUtils.getQuery(sql, params);
   if (!userData) {
-    req.session.errors = [{msg: "メールアドレスまたはパスワードが間違っています。"}];
+    req.session.errors = [{
+      path: "userNotFound",
+      msg: "ユーザーが存在しません。"
+    }];
     return res.render("./users/signinInput.ejs", {
       form: userForm,
       naviActive: "users",
@@ -56,9 +61,13 @@ exports.signinPost = async (req, res) => {
     });
   }
 
+  // パスワードの照合
   const isSuccess = await bcrypt.compare(userForm.password, userData.password);
   if (!isSuccess) {
-    req.session.errors = [{msg: "メールアドレスまたはパスワードが間違っています。"}];
+    req.session.errors = [{
+      path: "password",
+      msg: "メールアドレスまたはパスワードが間違っています。"
+    }];
     return res.render("./users/signinInput.ejs", {
       form: userForm,
       naviActive: "users",
@@ -120,18 +129,23 @@ exports.signupInputPost = (req, res) => {
  */
 exports.signupConfirm = async (req, res) => {
   const userForm = req.body;
-  const result = validationResult(req);
   req.session.userForm = userForm;
+  // バリデーションチェック
+  const result = validationResult(req);
   if(!result.isEmpty()) {
     req.session.errors = result.array({ onlyFirstError: true });
     return res.status(422).redirect("/users/signup/input");
   }
   
+  // ユーザーの存在確認
   const params = [userForm.email];
   const sql = "SELECT * FROM users WHERE email = ?";
   const userData = await DatabaseUtils.getQuery(sql, params);
   if (userData) {
-    req.session.errors = [{msg: "既に登録されているメールアドレスです。"}];
+    req.session.errors = [{
+      path: "registeredEmail",
+      msg: "既に登録されているメールアドレスです。"
+    }];
     return res.status(422).redirect("/users/signup/input");
   }
 
@@ -150,8 +164,14 @@ exports.signupConfirm = async (req, res) => {
 exports.signupRegister = async (req, res) => {
   const userForm = req.body;
   const sql = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
+  // パスワードのハッシュ化
   const hashedPassword = await bcrypt.hash(userForm.password, saltRounds);
-  const params = [userForm.lastName + " " + userForm.firstName, userForm.email, hashedPassword];
+  const params = [
+    userForm.lastName + " " + userForm.firstName,
+    userForm.email,
+    hashedPassword
+  ];
+  // ユーザー登録
   await DatabaseUtils.executeQuery(sql, params);
   res.redirect("/users/signup/done");
 }
@@ -174,7 +194,7 @@ exports.signupDone = (req, res) => {
  * @param {*} res レスポンスパラメータ
  */
 exports.signout = (req, res) => {
-  if (!req.session.token) {
+  if (!req.session.userData) {
     res.redirect("/users/signin");
   }
   req.session.destroy();
