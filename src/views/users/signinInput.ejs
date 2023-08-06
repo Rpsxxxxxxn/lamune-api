@@ -3,11 +3,16 @@
   <%- include("../header.ejs") %>
   <body>
     <%- include("../commons/navbar.ejs") %>
-      <div class="card mx-auto my-5 w-50">
+      <div class="card mx-auto my-5" style="max-width: 350px">
         <div class="card-header">
           ログイン
         </div>
         <div class="card-body">
+          <% if (errors && errors.some((error)=> error.path === 'userNotFound')) { %>
+            <div class="alert alert-danger" role="alert">
+              <%= errors.find((error)=> error.path === 'userNotFound').msg %>
+            </div>
+          <% } %>
           <form action="/users/signin" method="post">
             <div class="mb-3">
               <label for="email" class="form-label">メールアドレス

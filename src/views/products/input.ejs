@@ -4,31 +4,198 @@
   <body>
     <%- include("../commons/navbar.ejs") %>
     <div>
-      <div class="card mx-auto mt-5 w-50">
+      <div class="card mx-auto mt-5" style="max-width: 500px;">
         <div class="card-header">
-          製品登録画面
+          商品の出品
         </div>
         <div class="card-body">
           <form method="post" action="/products/confirm">
             <div class="mb-3">
-              <label for="companyInput" class="form-label">製品名</label>
-              <input id="companyInput" name="company" type="text" class="form-control <%= errors && errors.some((error) => error.path === 'company') ? 'is-invalid' : '' %>" maxlength="50" value="<%=form.company %>">
+              <label for="exhibitionImage" class="form-label">出品画像 (最大10枚)
+                <span class="badge bg-danger">必須</span>
+              </label>
+              <div class="input-group">
+                <input
+                 id="image"
+                 name="image"
+                 aria-label="出品画像 (最大10枚)"
+                 type="file"
+                 class="form-control <%= errors && errors.some((error) => error.path === 'image') ? 'is-invalid' : '' %>"
+                 aria-describedby="出品画像 (最大10枚)"
+                 aria-label="Upload"
+                 accept=".jpg, .jpeg, .png, .gif"
+                 value="<%= productForm.image %>"
+                 multiple>
+              </div>
               <div class="invalid-feedback">
-                <%= errors && errors.some((error) => error.path === 'company') ? errors.find((error) => error.path === 'company').msg : '' %>
+                <%= errors && errors.some((error) => error.path === 'image') ? errors.find((error) => error.path === 'image').msg : '' %>
+              </div>
+              <div id="sampleImages"></div>
+            </div>
+            <hr>
+            <h4>商品の詳細</h4>
+            <div class="mb-3">
+              <label
+               for="productState" 
+               class="form-label">商品の状態
+                <span class="badge bg-danger">必須</span>
+              </label>
+              <select
+               id="productState" 
+               name="productState" 
+               class="form-select <%= errors && errors.some((error) => error.path === 'productState') ? 'is-invalid' : '' %>" 
+               aria-label="商品の状態">
+               <% for (const value of displayElement.product_statuses) { %>
+                 <option value="<%= value.id %>" <%= value.id == productForm.productState ? 'selected' : '' %> ><%= value.product_status_name %></option>
+               <% } %>
+              </select>
+              <div class="invalid-feedback">
+                <%= errors && errors.some((error) => error.path === 'productState') ? errors.find((error) => error.path === 'productState').msg : '' %>
+              </div>
+            </div>
+            <!-- 商品の詳細 -->
+            <div class="mb-3">
+              <label 
+                for="name" 
+                class="form-label">商品名
+                <span class="badge bg-danger">必須</span>
+              </label>
+              <input
+                id="name"
+                aria-label="商品名" 
+                name="name" 
+                type="text" 
+                class="form-control <%= errors && errors.some((error) => error.path === 'name') ? 'is-invalid' : '' %>" 
+                maxlength="50" 
+                value="<%= productForm.name %>">
+              <div class="invalid-feedback">
+                <%= errors && errors.some((error) => error.path === 'name') ? errors.find((error) => error.path === 'name').msg : '' %>
               </div>
             </div>
             <div class="mb-3">
-              <div class="input-group">
-                <input id="multipleSelectFile" type="file" class="form-control" aria-describedby="multipleSelectFile" aria-label="Upload" multiple>
-                <button id="multipleSelectFileSubmit" type="button" class="btn btn-outline-secondary">確定</button>
-              </div>
-              <div id="sampleImages">
-
+              <label
+               for="productDescription" 
+               class="form-label">商品の説明
+                <span class="badge bg-secondary">任意</span>
+              </label>
+              <textarea
+                id="productDescription"
+                class="form-control <%= errors && errors.some((error) => error.path === 'description') ? 'is-invalid' : '' %>"
+                aria-label="商品の説明"
+                rows="3"><%= productForm.description %></textarea>
+              <div class="invalid-feedback">
+                <%= errors && errors.some((error) => error.path === 'description') ? errors.find((error) => error.path === 'description').msg : '' %>
               </div>
             </div>
+            <hr>
+            <h4>配送について</h4>
+            <div class="mb-3">
+              <label
+               for="deliveryChargeBurden" 
+               class="form-label">配送料の負担
+                <span class="badge bg-danger">必須</span>
+              </label>
+              <select
+               id="deliveryChargeBurden" 
+               name="deliveryChargeBurden" 
+               class="form-select <%= errors && errors.some((error) => error.path === 'deliveryChargeBurden') ? 'is-invalid' : '' %>" 
+               aria-label="配送料の負担"
+               value="<%= productForm.deliveryChargeBurden %>"
+               >
+              <% for (const value of displayElement.shipping_burdens) { %>
+                <option value="<%= value.id %>" <%= value.id == productForm.deliveryChargeBurden ? 'selected' : '' %> ><%= value.shipping_burden_name %></option>
+              <% } %>
+              </select>
+              <div class="invalid-feedback">
+                <%= errors && errors.some((error) => error.path === 'deliveryChargeBurden') ? errors.find((error) => error.path === 'deliveryChargeBurden').msg : '' %>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label
+               for="deliveryMethod" 
+               class="form-label">配送の方法
+                <span class="badge bg-danger">必須</span>
+              </label>
+              <select
+               id="deliveryMethod" 
+               name="deliveryMethod" 
+               class="form-select <%= errors && errors.some((error) => error.path === 'deliveryMethod') ? 'is-invalid' : '' %>" 
+               aria-label="配送の方法"
+               value="<%= productForm.deliveryChargeBurden %>"
+               >
+              <% for (const value of displayElement.shipping_methods) { %>
+                <option value="<%= value.id %>" <%= value.id == productForm.deliveryMethod ? 'selected' : '' %>><%= value.shipping_method_name %></option>
+              <% } %>
+              </select>
+              <div class="invalid-feedback">
+                <%= errors && errors.some((error) => error.path === 'deliveryMethod') ? errors.find((error) => error.path === 'deliveryMethod').msg : '' %>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="regionalOriginalDelivery" class="form-label">発送元の地域
+                <span class="badge bg-danger">必須</span>
+              </label>
+              <select
+               id="regionalOriginalDelivery" 
+               name="regionalOriginalDelivery" 
+               class="form-select <%= errors && errors.some((error) => error.path === 'regionalOriginalDelivery') ? 'is-invalid' : '' %>" aria-label="配送料の負担">
+                <% for (const value of displayElement.prefectures) { %>
+                  <option value="<%= value.id %>" <%= value.id == productForm.regionalOriginalDelivery ? 'selected' : '' %> ><%= value.prefecture_name %></option>
+                <% } %>
+              </select>
+              <div class="invalid-feedback">
+                <%= errors && errors.some((error) => error.path === 'regionalOriginalDelivery') ? errors.find((error) => error.path === 'regionalOriginalDelivery').msg : '' %>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label
+               for="daysUpToDelivery" 
+               class="form-label">発送までの日数
+                <span class="badge bg-danger">必須</span>
+              </label>
+              <select
+               id="daysUpToDelivery" 
+               name="daysUpToDelivery" 
+               class="form-select <%= errors && errors.some((error) => error.path === 'daysUpToDelivery') ? 'is-invalid' : '' %>" 
+               aria-label="配送料の負担">
+              <% for (const value of displayElement.shipping_days) { %>
+                <option value="<%= value.id %>" <%= value.id == productForm.daysUpToDelivery ? 'selected' : '' %> ><%= value.shipping_day_name %></option>
+              <% } %>
+              </select>
+              <div class="invalid-feedback">
+                <%= errors && errors.some((error) => error.path === 'daysUpToDelivery') ? errors.find((error) => error.path === 'daysUpToDelivery').msg : '' %>
+              </div>
+            </div>
+            <hr>
+            <h4>販売価格</h4>
+            <div class="mb-3">
+              <label
+               for="sellingPrice" 
+               class="form-label">販売価格 (¥300〜9,999,999)
+                <span class="badge bg-danger">必須</span>
+              </label>
+              <input 
+                id="sellingPrice"
+                aria-label="販売価格 (¥100〜9,999,999)"
+                name="price"
+                type="number"
+                class="form-control <%= errors && errors.some((error) => error.path === 'price') ? 'is-invalid' : '' %>"
+                maxlength="50"
+                value="<%= productForm.price %>">
+            </div>
+            <div class="mb-3">
+              <label>販売手数料</label>
+              <span id="salesCommission" style="float: right;">-</span>
+              <span style="float: right;">\</span>
+            </div>
+            <div class="mb-3">
+              <label>販売利益</label>
+              <span id="salesProfit" style="float: right;">-</span>
+              <span style="float: right;">\</span>
+            </div>
             <div class="row g-3 mb-3">
-              <button type="submit" class="btn btn-primary">送信</button>
-              <button type="button" class="btn btn-secondary">キャンセル</button>
+              <button type="submit" class="btn btn-primary">出品する</button>
+              <button type="submit" class="btn btn-outline-primary">下書きに保存する</button>
             </div>
           </form>
         </div>
@@ -37,7 +204,7 @@
   </body>
 </html>
 <script>
-  const multipleSelectFile = document.getElementById('multipleSelectFile');
+  const multipleSelectFile = document.getElementById('image');
   const sampleImages = document.getElementById('sampleImages');
   // 画像が選択された時のイベント
   multipleSelectFile.addEventListener('change', (event) => {
@@ -52,10 +219,29 @@
       img.src = URL.createObjectURL(fileList[i]);
       // アスペクト比を維持するためにwidthかheightのどちらかを固定する
       // 表示サイズは200px
-
-
+      img.style.width = '100px';
+      img.style.height = 'auto';
       // 画像表示エリアに選択された画像を表示する
       sampleImages.appendChild(img);
     }
   });
+  window.onload = function() {
+    const sellingPrice = document.getElementById('sellingPrice');
+    const salesCommission = document.getElementById('salesCommission');
+    const salesProfit = document.getElementById('salesProfit');
+    sellingPrice.addEventListener('input', (event) => {
+      sellingPriceCalc(sellingPrice, salesCommission, salesProfit);
+    });
+    sellingPriceCalc(sellingPrice, salesCommission, salesProfit);
+  }
+
+  function sellingPriceCalc(sellingPrice, salesCommission, salesProfit) {
+    if (sellingPrice.value > 100 && sellingPrice.value < 9999999) {
+      salesCommission.textContent = Math.floor(sellingPrice.value * 0.1).toLocaleString();
+      salesProfit.textContent = Math.floor(sellingPrice.value * 0.9).toLocaleString();
+    } else {
+      salesCommission.textContent = '-';
+      salesProfit.textContent = '-';
+    }
+  }
 </script>

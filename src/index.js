@@ -29,7 +29,12 @@ app.use('/search', searchRouter);
 // エラーハンドリング
 app.use((err, req, res, next) => {
   console.error(err.stack)
-  res.status(500).render('./commons/error.ejs', { error: err, naviActive: "", title: "エラーが発生しました。" });
+  res.status(500).render('./commons/error.ejs', { 
+    error: err, 
+    naviActive: "", 
+    title: "エラーが発生しました。", 
+    userData: req.session.userData 
+  });
 })
 
 app.listen(process.env.APP_PORT, () => {

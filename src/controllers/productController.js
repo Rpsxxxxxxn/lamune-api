@@ -2,6 +2,7 @@
  * 出品された商品の参照、編集、削除を行う
  */
 
+const { validationResult } = require("express-validator");
 const DatabaseUtils = require("../db/databaseUtils");
 
 /**
@@ -9,24 +10,36 @@ const DatabaseUtils = require("../db/databaseUtils");
  * @param {*} req リクエストパラメータ
  * @param {*} res レスポンスパラメータ
  */
-exports.productInputGet = (req, res) => {
-  const productForm = {
-    name: "",
-    price: "",
-    description: "",
-    productState: "",
-    deliveryChargeBurden: "",
-    deliveryMethod: "",
-    regionalOriginalDelivery: "",
-    daysUpToDelivery: "",
-    image: []
+exports.productInputGet = async (req, res) => {
+  let productForm = req.session.productForm;
+  const displayElement = {
+    prefectures: await DatabaseUtils.allQuery("SELECT * FROM prefectures;", []),
+    product_statuses: await DatabaseUtils.allQuery("SELECT * FROM product_statuses;", []),
+    shipping_burdens: await DatabaseUtils.allQuery("SELECT * FROM shipping_burdens;", []),
+    shipping_methods: await DatabaseUtils.allQuery("SELECT * FROM shipping_methods;", []),
+    shipping_days: await DatabaseUtils.allQuery("SELECT * FROM shipping_days;", []),
+  };
+  if (!productForm) {
+    productForm = {
+      name: "", // 製品名
+      price: "", // 価格
+      description: "", // 製品の説明
+      productState: "", // 製品の状態
+      deliveryChargeBurden: "", // 発送負担
+      deliveryMethod: "", // 配送方法
+      regionalOriginalDelivery: "", // 発送元地域
+      daysUpToDelivery: "", // 発送までの日数
+      image: [], // 画像
+    }
   }
 
   res.render("./products/input.ejs", {
-    form: productForm,
+    productForm: productForm,
+    displayElement: displayElement,
     title: "製品入力画面",
     naviActive: "products",
     errors: req.session.errors,
+    userData: req.session.userData,
   });
 }
 
@@ -43,17 +56,18 @@ exports.productInputPost = (req, res) => {
     req.session.productForm = productForm;
     req.session.errors = result.array({ onlyFirstError: true });
     return res.render("./users/signinInput.ejs", {
-      form: productForm,
+      productForm: productForm,
       naviActive: "users",
       errors: req.session.errors,
       title: "製品入力画面"
     });
   }
   res.render("./products/input.ejs", {
-    form: productForm,
+    productForm: productForm,
     title: "製品入力画面",
     naviActive: "products",
-    errors: req.session.errors
+    errors: req.session.errors,
+    userData: req.session.userData,
   });
 }
 
@@ -64,22 +78,19 @@ exports.productInputPost = (req, res) => {
  */
 exports.productInputConfirm = (req, res) => {
   const productForm = req.body;
+  console.log(productForm)
   // バリデーションチェック
   const result = validationResult(req);
   if(!result.isEmpty()) {
     req.session.productForm = productForm;
     req.session.errors = result.array({ onlyFirstError: true });
-    return res.render("./products/confirm.ejs", {
-      form: productForm,
-      naviActive: "products",
-      errors: req.session.errors,
-      title: "製品確認画面"
-    });
+    return res.redirect("/products/input");
   }
   res.render("./products/confirm.ejs", {
     title: "製品確認画面",
     naviActive: "products",
-    errors: req.session.errors
+    errors: req.session.errors,
+    userData: req.session.userData,
   });
 }
 
@@ -108,10 +119,10 @@ exports.productInputRegister = async (req, res) => {
 
     // 製品画像の登録
     const newProduct = await DatabaseUtils.getQuery("select max(rowid) as id from products;");  
-    for (let i = 0; i < productForm.imagePath.length; i++) {
+    for (const element of productForm.imagePath) {
       params = [
         newProduct.id,
-        productForm.imagePath[i]
+        element
       ]
       sql = "INSERT INTO product_images (product_id, image_path) VALUES (?, ?)";
       await DatabaseUtils.executeQuery(sql, params);
@@ -134,6 +145,7 @@ exports.productInputDone = (req, res) => {
   res.render("./products/done.ejs", {
     title: "製品完了画面",
     naviActive: "products",
-    errors: req.session.errors
+    errors: req.session.errors,
+    userData: req.session.userData,
   });
 }

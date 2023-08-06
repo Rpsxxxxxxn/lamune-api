@@ -7,6 +7,7 @@ exports.home = async (req, res) => {
 
   res.render("./homes/home.ejs", {
     naviActive: "home",
-    title: "トップページ"
+    title: "トップページ",
+    userData: req.session.userData,
   });
 }

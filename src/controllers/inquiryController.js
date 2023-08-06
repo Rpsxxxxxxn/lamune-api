@@ -24,7 +24,8 @@ exports.inputPost = (req, res) => {
     form: inquiriesForm,
     errors: req.session.errors,
     naviActive: "inquiries",
-    title: "お問い合わせ内容の入力"
+    title: "お問い合わせ内容の入力",
+    userData: req.session.userData,
   });
 }
 
@@ -48,7 +49,8 @@ exports.inputGet = (req, res) => {
     form: inquiriesForm,
     errors: req.session.errors,
     naviActive: "inquiries",
-    title: "お問い合わせ内容の入力"
+    title: "お問い合わせ内容の入力",
+    userData: req.session.userData,
   });
 }
 
@@ -69,7 +71,8 @@ exports.confirm = (req, res) => {
   res.render("./inquiries/confirm.ejs", {
     form: inquiriesForm,
     naviActive: "inquiries",
-    title: "お問い合わせ内容の確認"
+    title: "お問い合わせ内容の確認",
+    userData: req.session.userData,
   });
 }
 
@@ -99,6 +102,7 @@ exports.register = async (req, res) => {
 exports.done = (req, res) => {
   res.render("./inquiries/done.ejs", {
     naviActive: "inquiries",
-    title: "お問い合わせ内容の送信完了"
+    title: "お問い合わせ内容の送信完了",
+    userData: req.session.userData,
   });
 }

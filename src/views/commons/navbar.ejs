@@ -16,19 +16,25 @@
           <!-- <li class="nav-item">
             <a class="nav-link <%= naviActive === 'home' ? 'active' : '' %>" aria-current="page" href="http://localhost:8080/home">ホーム</a>
           </li> -->
-          <!-- <li class="nav-item">
-            <a class="nav-link <%= naviActive === 'cart' ? 'active' : '' %>" href="http://localhost:8080/cart/items">カート</a>
-          </li> -->
+          <% if (userData) { %>
+            <li class="nav-item">
+              <a class="nav-link <%= naviActive === 'cart' ? 'active' : '' %>" href="http://localhost:8080/cart/items">カート</a>
+            </li>
+          <% } %>
           <li class="nav-item">
             <a class="nav-link <%= naviActive === 'inquiries' ? 'active' : '' %>"  href="http://localhost:8080/inquiries/input">お問い合わせ</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link <%= naviActive === 'users' ? 'active' : '' %>" href="http://localhost:8080/users/signin">ログイン</a>
-          </li>
+          <% if (userData === undefined) { %>
+            <li class="nav-item">
+              <a class="nav-link <%= naviActive === 'users' ? 'active' : '' %>" href="http://localhost:8080/users/signin">ログイン</a>
+            </li>
+          <% } %>
         </ul>
-        <div class="dropdown">
-          <a class="btn btn-outline-danger" type="button" href="http://localhost:8080/product">出品</a>
-        </div>
+        <% if (userData) { %>
+          <div class="dropdown">
+            <a class="btn btn-outline-danger" type="button" href="http://localhost:8080/products/input">出品</a>
+          </div>
+        <% } %>
       </form>
     </div>
   </div>

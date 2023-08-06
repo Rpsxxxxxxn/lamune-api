@@ -21,7 +21,8 @@ exports.signinGet = (req, res) => {
     form: userForm,
     naviActive: "users",
     title: "ユーザーログイン画面",
-    errors: req.session.errors
+    errors: req.session.errors,
+    userData: req.session.userData,
   });
 }
 
@@ -41,7 +42,8 @@ exports.signinPost = async (req, res) => {
       form: userForm,
       naviActive: "users",
       errors: req.session.errors,
-      title: "ユーザーログイン画面"
+      title: "ユーザーログイン画面",
+      userData: req.session.userData,
     });
   }
   // ユーザーの存在確認
@@ -57,7 +59,8 @@ exports.signinPost = async (req, res) => {
       form: userForm,
       naviActive: "users",
       errors: req.session.errors,
-      title: "ユーザーログイン画面"
+      title: "ユーザーログイン画面",
+      userData: req.session.userData,
     });
   }
 
@@ -72,12 +75,13 @@ exports.signinPost = async (req, res) => {
       form: userForm,
       naviActive: "users",
       errors: req.session.errors,
-      title: "ユーザーログイン画面"
+      title: "ユーザーログイン画面",
+      userData: req.session.userData,
     });
   }
 
   req.session.userData = userData;
-  res.redirect("/users/home");
+  res.redirect("/home");
 }
 
 /**
@@ -97,7 +101,8 @@ exports.signupInputGet = (req, res) => {
     form: userForm,
     naviActive: "users",
     title: "ユーザー新規登録",
-    errors: req.session.errors
+    errors: req.session.errors,
+    userData: req.session.userData,
   });
 }
 /**
@@ -117,7 +122,8 @@ exports.signupInputPost = (req, res) => {
     form: userForm,
     naviActive: "users",
     title: "ユーザー新規登録",
-    errors: req.session.errors
+    errors: req.session.errors,
+    userData: req.session.userData,
   });
 }
 
@@ -152,7 +158,8 @@ exports.signupConfirm = async (req, res) => {
   res.render("./users/signupConfirm.ejs", {
     form: userForm,
     naviActive: "users",
-    title: "ユーザー登録情報確認"
+    title: "ユーザー登録情報確認",
+    userData: req.session.userData,
   });
 }
 
@@ -184,7 +191,8 @@ exports.signupRegister = async (req, res) => {
 exports.signupDone = (req, res) => {
   res.render("./users/signupDone.ejs", {
     naviActive: "users",
-    title: "ユーザー登録完了"
+    title: "ユーザー登録完了",
+    userData: req.session.userData,
   });
 }
 
@@ -200,6 +208,7 @@ exports.signout = (req, res) => {
   req.session.destroy();
   res.render("./users/signout.ejs",{
     naviActive: "users",
-    title: "ログアウト"
+    title: "ログアウト",
+    userData: null,
   });
 }
