@@ -6,6 +6,16 @@ Node JS v16.6.0
 DockerCompose  
 Jest  
 
+## 実行コマンド
+```
+プロジェクト開始
+npm run start
+```
+```
+テストコマンド
+npm run test
+```
+
 # 実装機能（画面）
 商品出品画面  
 商品一覧画面  
