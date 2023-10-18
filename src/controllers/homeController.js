@@ -9,5 +9,6 @@ exports.home = async (req, res) => {
     naviActive: "home",
     title: "トップページ",
     userData: req.session.userData,
+    products: products
   });
 }

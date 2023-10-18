@@ -1,7 +1,7 @@
 const sqlite3 = require('sqlite3').verbose();
 
 module.exports = class DatabaseUtils {
-    static DATABASE_PATH = './db/lamune.db';
+    static DATABASE_PATH = './src/db/lamune.db';
 
     /**
      * Execute SQL 挿入、更新、削除

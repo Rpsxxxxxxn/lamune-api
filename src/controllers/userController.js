@@ -170,17 +170,23 @@ exports.signupConfirm = async (req, res) => {
  */
 exports.signupRegister = async (req, res) => {
   const userForm = req.body;
-  const sql = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
-  // パスワードのハッシュ化
-  const hashedPassword = await bcrypt.hash(userForm.password, saltRounds);
-  const params = [
-    userForm.lastName + " " + userForm.firstName,
-    userForm.email,
-    hashedPassword
-  ];
-  // ユーザー登録
-  await DatabaseUtils.executeQuery(sql, params);
-  res.redirect("/users/signup/done");
+  try {
+    DatabaseUtils.executeQuery('BEGIN TRANSACTION;');
+    const sql = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
+    const hashedPassword = await bcrypt.hash(userForm.password, saltRounds);
+    const params = [
+      userForm.lastName + " " + userForm.firstName,
+      userForm.email,
+      hashedPassword
+    ];
+    await DatabaseUtils.executeQuery(sql, params);
+
+    DatabaseUtils.executeQuery('COMMIT;');
+  } catch (e) {
+    DatabaseUtils.executeQuery('ROLLBACK;');
+  } finally {
+    res.redirect("/users/signup/done");
+  }
 }
 
 /**

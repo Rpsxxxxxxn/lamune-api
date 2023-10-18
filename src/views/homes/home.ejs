@@ -6,42 +6,21 @@
 
     <div class="container my-5">
       <div class="row row-cols-4">
+      <% for(let item of products) { %>
         <div class="col">
           <div class="card">
             <img src="https://via.placeholder.com/150" class="card-img-top" alt="...">
             <div class="card-body">
-              <h5 class="card-title">商品</h5>
+              <h5 class="card-title"><%= item.name %></h5>
+              <p class="card-subtitle"><%= item.description %></p>
               <div class="d-flex justify-content-between">
-                <p class="card-text">¥1,919</p>
+                <p class="card-text">¥<%= item.price %></p>
                 <a href="#" class="btn btn-primary">購入</a>
               </div>
             </div>
           </div>
         </div>
-        <div class="col">
-          <div class="card">
-            <img src="https://via.placeholder.com/150" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">商品</h5>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card">
-            <img src="https://via.placeholder.com/150" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">商品</h5>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card">
-            <img src="https://via.placeholder.com/150" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">商品</h5>
-            </div>
-          </div>
-        </div>
+      <% } %>
       </div>
     </div>
   </body>
