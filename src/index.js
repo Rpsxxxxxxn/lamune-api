@@ -3,11 +3,11 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const inquiryRouter = require('./src/routes/inquiryRouter');
-const userRouter = require('./src/routes/userRouter');
-const homeRouter = require('./src/routes/homeRouter');
-const productRouter = require('./src/routes/productRouter');
-const searchRouter = require('./src/routes/searchRouter');
+const inquiryRouter = require('./routes/inquiryRouter');
+const userRouter = require('./routes/userRouter');
+const homeRouter = require('./routes/homeRouter');
+const productRouter = require('./routes/productRouter');
+const searchRouter = require('./routes/searchRouter');
 const session = require('express-session');
 
 app.use(session({
